@@ -72,62 +72,53 @@ class Users extends Component {
         this.updateField(e);
     }
 
+    getPrimaryFormField = (fields) => {
+
+        return fields.map((field) => {
+            return (
+                <Form.Group key={field}>
+                    <Form.Label
+                        htmlFor={field}
+                    >Username</Form.Label>
+                    <Form.Control
+                        onChange={this.changeHandler}
+                        type="text"
+                        id={field} />
+                </Form.Group>
+            )
+        });
+    }
+
+    getUIFormFields = (fields) => {
+        return fields.map((field) => {
+            return (
+                <div align="left">
+                    <Form.Group key={field}>
+                        <Form.Label
+                            htmlFor={field}
+                            value={field}>{field}</Form.Label>
+                        <Form.Control
+                        type="text"
+                        id={field}
+                        onChange={this.updateField}
+                        value={this.state[field]}
+                        />
+                    </Form.Group>
+                </div>
+            )
+        });
+    }
+
     render() {
         return (
             <div>
                 <Form>
                     <div align="left">
                     <hr />
-                    <Form.Group>
-                        <Form.Label
-                        htmlFor="username"
-                        >Username</Form.Label>
-                        <Form.Control
-                        onChange={this.changeHandler}
-                        type="text"
-                        id="username" />
-                    </Form.Group>
+                    { this.getPrimaryFormField(this.primaryFields) }
                     </div>
                     <hr />
-                    <div align="left">
-                    <Form.Group>
-                        <Form.Label
-                        htmlFor="email"
-                        value="email">Email</Form.Label>
-                        <Form.Control
-                        type="text"
-                        id="email"
-                        onChange={this.updateField}
-                        value={this.state.email}
-                        />
-                    </Form.Group>
-                    </div>
-                    <div align="left">
-                    <Form.Group>
-                        <Form.Label
-                        htmlFor="first_name"
-                        >First Name</Form.Label>
-                        <Form.Control
-                        type="text"
-                        id="first_name"
-                        onChange={this.updateField}
-                        value={this.state.first_name}
-                        />
-                    </Form.Group>
-                    </div>
-                    <div align="left">
-                    <Form.Group>
-                        <Form.Label
-                        htmlFor="last_name"
-                        >Last Name</Form.Label>
-                        <Form.Control
-                        type="text"
-                        id="last_name"
-                        onChange={this.updateField}
-                        value={this.state.last_name}
-                        />
-                    </Form.Group>
-                    </div>
+                    { this.getUIFormFields(this.uiFields) }
                     <hr />
                     <Form.Group role="form">
                         <Button 
