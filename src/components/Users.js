@@ -1,50 +1,78 @@
-import { Component } from "react";
-import { Button, Form } from "react-bootstrap";
+import React, { Component, useContext } from "react";
+import * as settings from '../settings';
 import axios from 'axios';
-import update from 'immutability-helper';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { UserContext } from "../contexts/UserContext";
+import {
+    FormControl,
+    FormLabel,
+    Input,
+    Button,
+    ButtonGroup,
+    FormErrorMessage,
+    FormHelperText,
+} from "@chakra-ui/react"
 
 class Users extends Component {
+    
+    static contextType = UserContext;
 
     primaryFields = ["username"];
     uiFields = ["email", "first_name", "last_name"];
 
-
     constructor(props) {
         super(props);
-        this.state = {}
-        this.primaryFields.map((id) => {
-            this.setState({[id]:""});
+        
+        this.state = [...this.primaryFields, ...this.uiFields].map((id) => {
+            return { [id]: "" };
         });
 
-        this.uiFields.map((id) => {
-            this.setState({[id]: ""});
-        })
+        console.log(this.state);
     }
 
-    clearState() {
-        [...this.primaryFields, ...this.uiFields].forEach((field) => {
-            this.setState({[field]: ""});
-        })
+    clearState(field_type="all") {
+        
+        if (field_type === "all" || field_type === "ui"){
+
+            this.uiFields.forEach((field) => {
+                this.setState({ [field]: "" });
+            });
+        }
+        if (field_type === "all" || field_type === "primary") {
+
+            this.primaryFields.forEach((field) => {
+                this.setState({ [field]: "" });
+            });
+        }
+        
+        
     }
 
     lookupUser(lookupKey) {
+        console.log(settings.API_SERVER);
+        console.log(process.env.NODE_ENV);
         if (lookupKey === "") {
             console.log("Clearing State");
-            this.clearState();
+            this.clearState("all");
             return;
         }
         try {
-            axios.get('http://127.0.0.1:8000/user/'+lookupKey, { validateStatus: false })
+            axios.get(`${settings.API_SERVER}/user/`+lookupKey)
             .then(res => {
+                if (res.status != 200) {
+                    throw (new Error("No 200 status"));
+                }    
                 if ("error" in res.data) {
-                    this.clearState();
+                    this.clearState("ui");
                     return;
                 }
                 const user = res.data;
                 this.setState(user);
+                console.log(this.state);
             });
-        } catch(err) {
+        } catch (err) {
+            console.log("Error found");
         }
         
     }
@@ -52,13 +80,22 @@ class Users extends Component {
     updateRecord = (e) => {
 
         let data = {};
-        [...this.primaryFields, ... this.uiFields].forEach((field) => {
+        [...this.primaryFields, ...this.uiFields].forEach((field) => {
             data[field] = this.state[field];
         })
 
-        axios.post('http://127.0.0.1:8000/user/'+this.state.username, data)
+        axios.put('http://127.0.0.1:8000/user', data)
         .then(res => {
-
+                toast.info('Record Updated', {
+                position: "top-left",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                });
+            
         });
     }
 
@@ -76,15 +113,23 @@ class Users extends Component {
 
         return fields.map((field) => {
             return (
-                <Form.Group key={field}>
-                    <Form.Label
-                        htmlFor={field}
-                    >Username</Form.Label>
-                    <Form.Control
-                        onChange={this.changeHandler}
+                <div className="primary-fields">
+                    <FormControl
+                        key={field}
+                        isRequired
+                    >
+                    <FormLabel>
+                            {field}
+                    </FormLabel>
+                    <Input
+                        data-lpignore="true"
+                        id={field}
                         type="text"
-                        id={field} />
-                </Form.Group>
+                        onChange={this.changeHandler}
+                        value={this.state[field]}
+                    />
+                    </FormControl>
+                </div>
             )
         });
     }
@@ -92,18 +137,21 @@ class Users extends Component {
     getUIFormFields = (fields) => {
         return fields.map((field) => {
             return (
-                <div align="left">
-                    <Form.Group key={field}>
-                        <Form.Label
-                            htmlFor={field}
-                            value={field}>{field}</Form.Label>
-                        <Form.Control
+                <div align="left" className="ui-fields">
+                <FormControl
+                    id={field}
+                    key={field}
+                >
+                    <FormLabel>
+                        {field}
+                    </FormLabel>
+                        <Input
+                        data-lpignore="true"
                         type="text"
-                        id={field}
                         onChange={this.updateField}
                         value={this.state[field]}
-                        />
-                    </Form.Group>
+                    />
+                </FormControl>
                 </div>
             )
         });
@@ -112,7 +160,6 @@ class Users extends Component {
     render() {
         return (
             <div>
-                <Form>
                     <div align="left">
                     <hr />
                     { this.getPrimaryFormField(this.primaryFields) }
@@ -120,7 +167,7 @@ class Users extends Component {
                     <hr />
                     { this.getUIFormFields(this.uiFields) }
                     <hr />
-                    <Form.Group role="form">
+                    <ButtonGroup role="form" key="fg1">
                         <Button 
                         className="btn"
                         onClick={this.updateRecord}
@@ -131,8 +178,19 @@ class Users extends Component {
                         onClick={this.createRecord}
                         disabled={this.state.username}
                         >Create</Button>
-                    </Form.Group>
-                </Form>
+                    </ButtonGroup>
+                <ToastContainer
+                    position="top-left"
+                    autoClose={1500}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    key="toastcontainer"
+                />
             </div>
         )
     }

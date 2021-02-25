@@ -7,6 +7,12 @@ import {
   Link
 } from 'react-router-dom';
 import Users from './components/Users';
+import Twoots from './components/Twoots';
+import { UserProvider } from './contexts/UserContext';
+import { TwootProvider } from './contexts/TwootContext';
+// import { Navbar } from 'react-bootstrap';
+
+
 
 
 function App() {
@@ -14,22 +20,30 @@ function App() {
     <div className="App">
       <Router>
         <div>
-          <nav>
-            <ul>
-              <li>
-                <Link to="/">Home</Link>
-              </li>
-              <li>
-                <Link to="/users">Users</Link>
-              </li>
-            </ul>
+          <nav className="navbar">
+            <div className="nav-item">
+              <Link to="/">Home</Link>
+            </div>
+            <div className="nav-item">
+              <Link to="/users">Users</Link>
+            </div>
+            <div className="nav-item">
+              <Link to="/twoots">Twoots</Link>
+            </div>
           </nav>
         </div>
-
+        
         <Switch>
           <Route path="/users">
-            <Users />
+            <UserProvider>
+              <Users />
+            </UserProvider>
           </Route>          
+          <Route path="/twoots">
+            <TwootProvider>
+              <Twoots />
+            </TwootProvider>
+          </Route>
         </Switch>
 
 
