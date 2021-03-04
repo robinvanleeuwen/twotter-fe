@@ -17,7 +17,7 @@ class Twoots extends Component {
 
     async getUsersFromAPI() {
     
-        const result = await axios.get("http://127.0.0.1:8000/users");
+        const result = await axios.get(`${settings.API_SERVER}/users`);
         return result;
     }
     componentDidMount() {
@@ -38,7 +38,7 @@ class Twoots extends Component {
     }
 
     getTwoots(x) {
-        axios.get("http://127.0.0.1:8000/twoot/get/byuser/" + x).then(x => {
+        axios.get(`${settings.API_SERVER}/twoot/get/byuser/` + x).then(x => {
             var twoots = [];
 
             for (const key in x.data[1]) {

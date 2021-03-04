@@ -84,7 +84,7 @@ class Users extends Component {
             data[field] = this.state[field];
         })
 
-        axios.put('http://127.0.0.1:8000/user', data)
+        axios.put(`${settings.API_SERVER}/user`, data)
         .then(res => {
                 toast.info('Record Updated', {
                 position: "top-left",
