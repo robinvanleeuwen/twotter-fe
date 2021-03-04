@@ -1,5 +1,7 @@
 import { Component } from "react";
 import { TwootContext } from '../contexts/TwootContext';
+import * as settings from '../settings';
+
 import axios from 'axios';
 
 class Twoots extends Component {
