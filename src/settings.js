@@ -8,7 +8,7 @@ switch (process.env.NODE_ENV) {
         API_SERVER_VAL = process.env.REACT_APP_API_SERVER_VAL;
         break;
     default:
-        API_SERVER_VAL = 'http://localhost:8000/';
+        API_SERVER_VAL = 'http://twotter.rldsoftware.nl:5000/';
         break;
 }
 
