@@ -27,10 +27,26 @@ code {
 }
 
 .container {
-  background-color: rgb(170, 21, 21);
+  box-shadow: 4px px 8px 5px #000000;
+  -webkit-box-shadow: 5px 5px 8px 5px #969696;
+  background-color: blue;
+  color: white;
   padding: 10px;
   border-radius: 10px;
-  margin: 2px;
+  margin: 15px;
+  box-shadow: cornsilk;
+  text-shadow: crimson;
+}
+.users {
+  box-shadow: 4px px 8px 5px #000000;
+  -webkit-box-shadow: 5px 5px 8px 5px #969696;
+  background-color: blue;
+  color: white;
+  padding: 10px;
+  border-radius: 10px;
+  margin: 15px;
+  box-shadow: cornsilk;
+  text-shadow: crimson;
 }
 .primary-fields {
   box-shadow: 4px px 8px 5px #000000;
@@ -55,7 +71,7 @@ code {
 .twoot {
   color: rgb(255, 255, 255);
   display: flex;
-  background-color: rgb(104, 34, 34);
+  background-color: rgb(138, 124, 219);
   padding: 10px;
   width: 40%;
   margin: 10px;

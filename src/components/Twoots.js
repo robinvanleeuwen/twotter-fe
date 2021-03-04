@@ -55,9 +55,11 @@ class Twoots extends Component {
 
         return (
             <div>
+                <div className="users">
                 <ul>
                     { this.getUsers() }
-                </ul>
+                    </ul>
+                </div>
                 <div className="container" id="container">
                 {
                     this.state["twoots"].map(x => (
