@@ -1,3 +1,5 @@
+import dotenv from  'dotenv'
+
 let API_SERVER_VAL = '';
 
 switch (process.env.NODE_ENV) {
