@@ -58,7 +58,7 @@ class Users extends Component {
             return;
         }
         try {
-            axios.get(`${settings.API_SERVER}/user/`+lookupKey)
+            axios.get(`${settings.API_SERVER}/user/${lookupKey}`)
             .then(res => {
                 if (res.status != 200) {
                     throw (new Error("No 200 status"));
